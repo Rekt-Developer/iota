@@ -1,0 +1,155 @@
+{% extends 'layout.html' %}
+
+
+{% block title %}Home{% endblock %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.css" rel="stylesheet" media="all">
+<link rel="stylesheet" href="css/home.css" />
+<link rel="stylesheet" href="css/joinpopup.css" />
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome back, <a id="userID">{{ username }}</a>!</p>
+
+
+<div>
+    <div class="content-header links" style="all:revert">
+        <form action="" method="get" class="filters-form">
+            <Table style="margin: auto;">
+                <tr>
+                    <!-- <th style="float: left;"> -->
+                    <div class="filters">
+                        <td>
+                            <!-- <label for="search" style="width: inherit;"></label> -->
+                            <div style="display: flex;">
+                                <i class="fas fa-search" style="margin: 0px 5px 0px 5px; padding:5px 0px 0px 0px;"></i>
+                                <input id="searchbar" onkeyup="searchRooms()" type="text" name="search"
+                                    placeholder="Search rooms.." style="min-width: 300px;">
+                            </div>
+                        </td>
+                    </div>
+                </tr>
+                <tr>
+                    <!-- <div> -->
+                    <td style="padding: 5px; display: table; margin: auto;">
+                        <a><i class="fas fa-filter" style="padding: 5px;"></i></a>
+                        <code class="hljs xml"></code>
+                        <select id="selector" onclick="sortTable()" name="roomSearchFilter">
+                            <option value="Users">Users</option>
+                            <option value="Age">Age</option>
+                            <option value="Topic">Topic</option>
+                            <option value="Time Left">Time Left</option>
+                            <option value="Host">Host</option>
+                            <option value="Cost">Cost</option>
+                        </select>
+                        </code>
+                        <!-- </td>
+                    <td> -->
+                        <label for="Sort" style="padding: 5px;">Sort:</label>
+                        <a onclick="sortASC()" style="padding: 5px;" name="Sort"><i class="fas fa-arrow-up"></i></a>
+                        <a onclick="sortDSC()" style="padding: 5px;" name="Sort"><i class="fas fa-arrow-down"></i></a>
+                        <strong style="padding: 5px;" id="order">
+                            ASC
+                        </strong>
+                    </td>
+                    <!-- </div> -->
+                </tr>
+            </Table>
+        </form>
+        <div>
+            <p> {{Joke["value"]}}</p>
+        </div>
+    </div>
+    <div id="tableDiv">
+        <nav>
+            <p id="roomLists" hidden>{{rooms}}</p>
+            <table id="activeRooms">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Topic</th>
+                        <th>Host</th>
+                        <th> Users </th>
+                        <th> Age </th>
+                        <th>Cost</th>
+                        <th>Time Left</th>
+                        <th>Join Room</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <table hidden>
+                <tr id="rm#row" class="rooms">
+
+                    <td id="rmNum">10. </td>
+                    <td id="rmTopic">pets</td>
+                    <td id="rmHost">Admin</td>
+                    <td id="rmNumofUsers">3</td>
+
+                    <td id="rmTimeSeconds" hidden>X</td>
+
+                    <td id="rmAge"style="display: flex;">86d 29h 50m 52s</td>
+                    <td id="rmCost">360</td>
+                    <td id="rmTime" style="display: flex;"><text id="timeLeftText" style="margin: 0px 5px 0px 5px;">2</text><img src="/images/plussign.png" width="16px" height="16px" style="margin: 0px 1px 0px 10px;"></i></td>
+                    <td>
+                        <form action="/modal" method="POST">
+                            <button type="submit" value="JoinRm">Join</button>
+                            <input id="rmJoin" name="join" style="display: none;">
+                            <input id="rmCreate" name="create" style="display: none;">
+                            <input id="rmTopicVal" name="topic" style="display: none;">
+                            <input id="rmUser" name="user" style="display: none;">
+                            <input id="rmRoomID" name="roomID" style="display: none;">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </nav>
+    </div>
+    <style>
+        #tableDiv {
+            padding: 5px;
+            max-height: 500px;
+            overflow-y: scroll;
+            border: 1px solid black;
+        }
+
+        #activeRooms {
+            margin: auto;
+            text-align: center;
+            padding: 0px 5px;
+            background-color: aliceblue;
+        }
+
+        #activeRooms td th {
+            padding: 0px 20px;
+            margin: 0px 20px;
+            /* border: 5px solid black; */
+        }
+
+        #activeRooms tbody tr td {
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0px 5px;
+        }
+    </style>
+
+</div>
+<script src="js/joinorcreate.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/home.js"></script>
+<script>
+    var sortOrder = document.getElementById("order");
+    function sortDSC() {
+        sortOrder.innerText = "DSC";
+        sortTable();
+    }
+    function sortASC() {
+        sortOrder.innerText = "ASC";
+        sortTable();
+    }
+</script>
+
+
+{% include 'joinorcreate.html' %}
+
+<h2>About</h2>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+<div id="joinORcreateROOM" style="all:revert">
+    <table style="width:100%">
+        <tr>
+            <th><button class="open-buttonCreate" onclick="openFormCreate()">Create Room</button></th>
+            <th><button class="open-buttonJoin" onclick="openFormJoin()">Join Room</button></th>
+        </tr>
+    </table>
+
+    <div class="form-popup" id="myFormCreate">
+        <form action="/modal?create" class="form-container">
+            <h1 style="margin-left: 50px;">Create Room</h1>
+
+            <label for="topic">Topic</label>
+            <input type="text" placeholder="Enter an Topic" name="topic" id="topic" required>
+
+            <label for="roomID">Room ID</label>
+            <input type="text" placeholder="Enter an unique ID" name="roomID" id="roomID" required>
+
+            <input hidden type="text" placeholder="{{username}}" name="host" id="host" value="{{username}}">
+            <input hidden type="text" placeholder="{{username}}" name="users" id="users" value="{{username}}">
+            <input hidden type="text" placeholder="0" name="join" value="0">
+            <input hidden type="text" placeholder="1" name="create" value="1">
+            <input hidden type="text" placeholder="1" name="private" id="privateBoolean" value="1">
+
+            <label for="passcode">Passcode</label>
+            <input type="password" placeholder="Enter Passcode" name="passcode" id="passcode" required>
+
+
+            <table style="width:100%;">
+                <tr>
+                    <th> <label for="costJoin">Join Fee:</label>
+                        <input type="text" placeholder="Enter amount of points to join Stream" name="joincost"
+                            id="joincost" required>
+                    </th>
+                    <th> <label for="costWatch">Watch Fee:</label>
+                        <input type="text" placeholder="Enter smaller amount to join Stream" name="watchcost"
+                            id="watchcost" required>
+                    </th>
+                    <th> <label for="roomTime">Duration:</label>
+                        <input type="text" placeholder="length of Time for room" name="roomtime" 
+                            id="roomTime" required>
+                    </th>
+                </tr>
+            </table>
+
+            <label for="teams">Teams:</label>
+            <input id="teamsInput" type="text" placeholder="Enter up to 4 teams" name="teams">
+
+            <label for="tags">Tags to search with:</label>
+            <input id="tagsInput" type="text" placeholder="Enter 5 tags using commas" name="tags">
+
+            <div style="margin: 5px; padding-bottom: 5px;">
+                <label for="private">Keep Private:</label>
+                <input id="privateBox" type="checkbox" name="private">
+                <label for="private">Save Room Config:</label>
+                <input id="saveConfigBox" type="checkbox" name="saveConfig">
+            </div>
+            <button type="button" class="btn" id="create" onclick="createRoom()">Create</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+
+        </form>
+    </div>
+
+    <div class="form-popup" id="myFormJoin">
+        <form action="/modal" class="form-container">
+            <h1>Join Room</h1>
+
+            <label for="email">Room ID#</label>
+            <input id="joinroom#" type="text" placeholder="Enter Room ID #" name="roomID" required>
+
+            <label for="passcode">Passcode</label>
+            <input type="password" placeholder="Enter Passcode" name="passcode" id="password" required>
+
+            <input hidden type="text" placeholder="{{username}}" name="user" value="{{username}}">
+            <input hidden type="text" placeholder="1" name="join" value="1">
+            <input hidden type="text" placeholder="0" name="create" value="0">
+
+            <table style="width:100%; align-content: center;">
+                <tr>
+                    <!-- <th><button type="submit" action="/modal" method="POST" class="btn" onclick="joinRoom()">Join</button></th> -->
+                    <th>
+                        <form action="/joinRoom" method="POST"><button type="button" class="btn"
+                                onclick="joinRoom()">Join</button></form>
+                    </th>
+                    <!-- <th><button type="submit" class="btn" onclick="WatchRoom()">Watch</button></th> -->
+                </tr>
+            </table>
+
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        function openFormJoin() {
+            document.getElementById("myFormJoin").style.display = "block";
+        }
+        function openFormCreate() {
+            document.getElementById("myFormCreate").style.display = "block";
+        }
+
+        function submitForm() {
+            var value = document.getElementById("privateBox").value;
+            console.log("private checkbox: ", value);
+            if (value == true) {
+                document.getElementById("privateBoolean").value = 1;
+            } else {
+                document.getElementById("privateBoolean").value = 0;
+            }
+            var teams = document.getElementById("teamsInput");
+            var teamArray = teams.value.split(",");
+            teams.value = teamArray;
+            var tags = document.getElementById("tagsInput");
+            var tagArray = tags.value.split(",");
+            tags.value = tagArray;
+            saveRoomConfig();
+        }
+
+        function saveRoomConfig() {
+
+        }
+
+        function closeForm() {
+            document.getElementById("myFormJoin").style.display = "none";
+            document.getElementById("myFormCreate").style.display = "none";
+        }
+    </script>
+    <script> src = "js/joinorcreate.js" </script>
+</div>
+
+<link rel="stylesheet" href="css/joinpopup.css" />
